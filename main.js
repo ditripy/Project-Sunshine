@@ -5,7 +5,8 @@ function _maps(){
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    window.onload = function() {
-        _maps();
-    };
 }
+
+window.onload = function() {
+    _maps();
+};
