@@ -28,6 +28,10 @@
     </head>
     <body>
         <div id="map"></div>
+        <form id="addressForm">
+            <input type="text" id="addressInput" placeholder="Enter street name or address">
+            <button type="submit">Report Status</button>
+        </form>
     </body>
     <script>
         var map = L.map('map').setView([51.505, -0.09], 13);
@@ -72,6 +76,23 @@ if(err.code===1){
     alert("Cannot get current location");
 }
 }
+
+document.getElementById('addressForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var address = document.getElementById('addressInput').value;
+
+            L.Control.Geocoder.nominatim().geocode(address, function(results) {
+                if (results && results.length > 0) {
+                    var latlng = [results[0].center.lat, results[0].center.lng];
+
+                    L.marker(latlng).addTo(map)
+                        .bindPopup(address)
+                        .openPopup();
+                } else {
+                    alert('Address not found');
+                }
+            });
+        });
 
     </script>
 </html>
