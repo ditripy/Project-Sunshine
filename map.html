@@ -81,8 +81,10 @@ if(err.code===1){
     alert("Cannot get current location");
 }
 }
-
-var geocoder = L.Control.Geocoder.nominatim().addTo(map);
+// Geocoder control initialization
+var geocoder = L.Control.geocoder({
+        geocoder: L.Control.Geocoder.nominatim()
+    }).addTo(map);
 
     document.getElementById('addressForm').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -94,7 +96,10 @@ var geocoder = L.Control.Geocoder.nominatim().addTo(map);
             L.marker(latlng).addTo(map)
                 .bindPopup(e.geocode.name)
                 .openPopup();
-        }).addTo(map).geocode(address);
+        });
+
+        // Geocode the address
+        geocoder.geocode(address);
     });
     </script>
 </html>
