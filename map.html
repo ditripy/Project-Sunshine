@@ -1,19 +1,16 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!-- Mobile Metas -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <!-- Site Metas -->
-        <meta name="keywords" content="" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-
-        <title> Map Navigator </title>
-
-        <!--Leaflet CSS-->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Map Navigator</title>
+    
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
 
@@ -202,4 +199,33 @@ var geocoder = L.Control.geocoder({
           </div>
         </div>
       </footer>
+    
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+     
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    
+    
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    
+    
+    <link rel="stylesheet" href="sunshine.css" />
+</head>
+<body>
+    <div id="map"></div>
+    <form id="addressForm">
+        <input type="text" id="addressInput" placeholder="Enter street name or address" /> <br>
+        <button type="submit">Report Status</button> <br>
+        <button id="currentLocationBtn">Use Current Location</button> <br>
+    </form>
+    <select id="iconSelect">
+        <option value="default">Default Icon</option>
+        <option value="custom1">Custom Icon 1</option>
+        <option value="custom2">Custom Icon 2</option>
+    </select>
+    <script src="main.js"></script>
+</body>
 </html>
