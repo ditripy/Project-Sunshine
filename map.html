@@ -22,9 +22,9 @@
  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
  crossorigin=""></script>
 
-<!-- Mapbox Geocoding -->
-<script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-geocoder/v1.13.0/leaflet-geocoder.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox.js/plugins/leaflet-geocoder/v1.13.0/leaflet-geocoder.css' />
+  <!-- Leaflet Geocoding Control -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 
        <style>
@@ -82,19 +82,22 @@ if(err.code===1){
 }
 }
 
+
 document.getElementById('addressForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var address = document.getElementById('addressInput').value;
 
-            // Use Mapbox Geocoding API
-            L.Control.geocoder({
-                geocoder: L.Control.Geocoder.mapbox('YOUR_MAPBOX_ACCESS_TOKEN')
-            }).on('markgeocode', function(e) {
-                var latlng = e.geocode.center;
-                L.marker(latlng).addTo(map)
-                    .bindPopup(e.geocode.name)
-                    .openPopup();
-            }).addTo(map).geocode(address);
+            
+            geocoder.geocode(address, function(results) {
+                if (results && results.length > 0) {
+                    var latlng = results[0].center;
+                    L.marker(latlng).addTo(map)
+                        .bindPopup(results[0].name)
+                        .openPopup();
+                } else {
+                    alert('Address not found');
+                }
+            });
         });
     </script>
 </html>
