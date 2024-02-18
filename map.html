@@ -82,9 +82,7 @@ if(err.code===1){
 }
 }
 
-var geocoder = L.Control.geocoder({
-        geocoder: L.Control.geocoder.nominatim()
-    }).addTo(map);
+var geocoder = L.Control.Geocoder.nominatim().addTo(map);
 
     document.getElementById('addressForm').addEventListener('submit', function(event) {
         event.preventDefault();
