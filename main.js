@@ -6,6 +6,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 var markers = [];
+
 var userIcon = L.icon({
     iconUrl: 'images/snow.png',
     iconSize: [32, 32],
@@ -42,7 +43,7 @@ function success(place) {
     }
 
     marker = L.marker([lat, lng]).addTo(map);
-    circle = L.circle([lat, lng], {radius: accuracy / 100}).addTo(map);
+    circle = L.circle([lat, lng], { radius: accuracy / 100 }).addTo(map);
 
     if (!zoomed) {
         map.setView([lat, lng], 15);
@@ -50,6 +51,7 @@ function success(place) {
     }
 
     map.setView([lat, lng]);
+    updateMarkers();
 }
 
 function error(err) {
@@ -58,6 +60,7 @@ function error(err) {
     } else {
         alert("Cannot get current location");
     }
+    updateMarkers();
 }
 
 var geocoder = L.Control.geocoder({
@@ -70,20 +73,21 @@ document.getElementById('addressForm').addEventListener('submit', function (even
 
     geocoder.on('markgeocode', function (e) {
         var latlng = e.geocode.center;
-        var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
+        var marker = L.marker(latlng, { icon: userIcon }).addTo(map)
             .bindPopup(e.geocode.name)
             .openPopup();
+        reverseGeocodeAndStore(marker);
         markers.push(marker);
         attachMarkerClickEvent(marker);
     });
 
-
     geocoder.options.geocoder.geocode(address, function (results) {
         if (results && results.length > 0) {
             var latlng = results[0].center;
-            var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
+            var marker = L.marker(latlng, { icon: userIcon }).addTo(map)
                 .bindPopup(results[0].name)
                 .openPopup();
+            reverseGeocodeAndStore(marker);
             markers.push(marker);
             attachMarkerClickEvent(marker);
         } else {
@@ -96,35 +100,16 @@ document.getElementById('currentLocationBtn').addEventListener('click', function
     event.preventDefault();
     navigator.geolocation.getCurrentPosition(function (position) {
         var latlng = [position.coords.latitude, position.coords.longitude];
-        var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
+        var marker = L.marker(latlng, { icon: userIcon }).addTo(map)
             .bindPopup('Your Current Location')
             .openPopup();
+        reverseGeocodeAndStore(marker);
         markers.push(marker);
         attachMarkerClickEvent(marker);
     }, function (error) {
         console.error('Error getting current location:', error);
         alert('Error getting current location.');
     });
-});
-
-document.getElementById('iconSelect').addEventListener('change', function () {
-    var selectedIcon = iconSelect.value;
-    var selectedMarker = document.querySelector('.selected-marker');
-    if (selectedMarker) {
-        switch (selectedIcon) {
-            case 'custom1':
-                selectedMarker.setIcon(customIcon1);
-                break;
-            case 'custom2':
-                selectedMarker.setIcon(customIcon2);
-                break;
-            default:
-                alert("Invalid icon selection.");
-        }
-        selectedMarker.classList.remove('selected-marker');
-    } else {
-        alert("No marker selected.");
-    }
 });
 
 function attachMarkerClickEvent(marker) {
@@ -137,10 +122,9 @@ function attachMarkerClickEvent(marker) {
         this.setIcon(customIcon1);
         this.classList.add('selected-marker');
     });
+    updateMarkers();
 }
 
 markers.forEach(function (marker) {
     attachMarkerClickEvent(marker);
 });
-
-    

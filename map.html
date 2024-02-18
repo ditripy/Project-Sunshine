@@ -13,192 +13,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
-
-     
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
- integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
- crossorigin=""></script>
-
-  <!-- Leaflet Geocoding Control -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-
-
-       <style>
-        #map {height: 400px;}
-       </style>
-    </head>
-    <body>
-        <div id="map"></div>
-        <form id="addressForm">
-            <input type="text" id="addressInput" placeholder="Enter street name or address">
-            <button type="submit">Report Status</button>
-            <button id="currentLocationBtn">Use Current Location</button>
-        </form>
-
-        <select id="iconSelect">
-            <option value="default">Default Icon</option>
-            <option value="custom1">Custom Icon 1</option>
-            <option value="custom2">Custom Icon 2</option>
-        </select>
-
-    </body>
-    <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
-
-
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-
-var markers = [];
-var userIcon = L.icon({
-            iconUrl: 'images/snow.png',
-            iconSize: [32, 32], 
-            iconAnchor: [16, 32], 
-            popupAnchor: [0, -32] 
-        });
-
-        var customIcon1 = L.icon({
-            iconUrl: 'images/sun.png', 
-            iconSize: [32, 32], 
-            iconAnchor: [16, 32], 
-            popupAnchor: [0, -32] 
-        });
-
-        var customIcon2 = L.icon({
-        iconUrl: 'images/cone.png', 
-        iconSize: [32, 32], 
-        iconAnchor: [16, 32], 
-        popupAnchor: [0, -32] 
-        });
-
-navigator.geolocation.watchPosition(success, error);
-
-let marker, circle, zoomed;
-
-function success(place){
-const lat = place.coords.latitude;
-const lng = place.coords.longitude;
-const accuracy = place.coords.accuracy;
-
-if(marker){
-    map.removeLayer(marker);
-    map.removeLayer(circle);
-}
-
-marker = L.marker([lat,lng]).addTo(map);
-circle = L.circle([lat,lng], {radius: accuracy}).addTo(map);
-
-if (!zoomed){
-    zoomed = map.fitBounds(circle.getBounds());
-}
-
-map.setView([lat,lng]);
-
-}
-
-function error(err){
-if(err.code===1){
-    alert("Please allow geolocation access");
-}else{
-    alert("Cannot get current location");
-}
-}
-
-var geocoder = L.Control.geocoder({
-            geocoder: L.Control.Geocoder.nominatim()
-        }).addTo(map);
-
-        document.getElementById('addressForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var address = document.getElementById('addressInput').value;
-
-            geocoder.on('markgeocode', function(e) {
-                var latlng = e.geocode.center;
-                var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
-                .bindPopup(e.geocode.name)
-                .openPopup();
-            markers.push(marker);
-            attachMarkerClickEvent(marker);
-        });
-
-            
-            geocoder.options.geocoder.geocode(address, function(results) {
-                if (results && results.length > 0) {
-                    var latlng = results[0].center;
-                    var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
-                    .bindPopup(results[0].name)
-                    .openPopup();
-                markers.push(marker);
-                attachMarkerClickEvent(marker);
-            } else {
-                alert('Address not found');
-            }
-        });
-    });
-
-        document.getElementById('currentLocationBtn').addEventListener('click', function(event) {
-            event.preventDefault();
-            navigator.geolocation.getCurrentPosition(function(position) {
-                var latlng = [position.coords.latitude, position.coords.longitude];
-                var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
-                .bindPopup('Your Current Location')
-                .openPopup();
-            markers.push(marker);
-            attachMarkerClickEvent(marker);
-        }, function (error) {
-            console.error('Error getting current location:', error);
-            alert('Error getting current location.');
-        });
-    });
-
-    document.getElementById('iconSelect').addEventListener('change', function() {
-        var selectedIcon = iconSelect.value;
-        var selectedMarker = getSelectedMarker();
-        if (selectedMarker) {
-            switch (selectedIcon) {
-                case 'custom1':
-                    selectedMarker.setIcon(customIcon1);
-                    break;
-                case 'custom2':
-                    selectedMarker.setIcon(customIcon2);
-                    break;
-                default:
-                    alert("Invalid icon selection.");
-            }
-            selectedMarker.classList.remove('selected-marker');
-        } else {
-            alert("No marker selected.");
-        }
-    });
-
-    function attachMarkerClickEvent(marker) {
-        marker.on('click', function (e) {
-            var selectedMarker = getSelectedMarker();
-            if (selectedMarker) {
-                selectedMarker.classList.remove('selected-marker');
-            }
-            this.classList.add('selected-marker');
-        });
-    }
-
-    function getSelectedMarker() {
-        return document.querySelector('.selected-marker');
-    }
-    </script>
-    <footer class="container-fluid footer_section">
-        <div class="container">
-          <div class="row">
-            <div class="col-lg-7 col-md-9 mx-auto">
-              <p>
-                &copy; Made with love by Powerpuff Girls 
-              </p>
-            </div>
-          </div>
-        </div>
-      </footer>
     
     
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -213,19 +27,77 @@ var geocoder = L.Control.geocoder({
     
     
     <link rel="stylesheet" href="sunshine.css" />
+
+<!-- slider stylesheet -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.1.3/assets/owl.carousel.min.css" />
+
+<!-- bootstrap core css -->
+<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+<!-- fonts style -->
+<link href="https://fonts.googleapis.com/css?family=Poppins:400,600,700&display=swap" rel="stylesheet">
+<!-- Custom styles for this template -->
+<link href="css/style.css" rel="stylesheet" />
+<!-- responsive style -->
+<link href="css/responsive.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+
 </head>
 <body>
+    <div class="hero_area">
+        <header class="header_section">
+            <div class="container">
+              <nav class="navbar navbar-expand-lg custom_nav-container ">
+                <a class="navbar-brand" href="index.html">
+                  <img src="images/sunn.png" alt="" />
+                  <span id="n"> Project Sunshine </span>
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="s-1"> </span>
+                  <span class="s-2"> </span>
+                  <span class="s-3"> </span>
+                </button>
+      
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+                    <ul class="navbar-nav  ">
+                      <li class="nav-item active">
+                        <a class="nav-link" href="index.html"
+                          >Home<span class="sr-only">(current)</span></a
+                        >
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="need.html">Need Help?</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="contact.html">APPLY!</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="service.html">What we do</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Achievements</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </nav>
+            </div>
+          </header>
+
+
     <div id="map"></div>
     <form id="addressForm">
-        <input type="text" id="addressInput" placeholder="Enter street name or address" /> <br>
+        <input type="text" id="addressInput" placeholder="Enter street name or address" />
         <button type="submit">Report Status</button> <br>
         <button id="currentLocationBtn">Use Current Location</button> <br>
     </form>
-    <select id="iconSelect">
-        <option value="default">Default Icon</option>
-        <option value="custom1">Custom Icon 1</option>
-        <option value="custom2">Custom Icon 2</option>
-    </select>
+
+    <div id="addresses"></div>
+  
     <script src="main.js"></script>
 </body>
 </html>
