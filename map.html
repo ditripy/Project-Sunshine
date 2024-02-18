@@ -38,6 +38,13 @@
             <button type="submit">Report Status</button>
             <button id="currentLocationBtn">Use Current Location</button>
         </form>
+
+        <select id="iconSelect">
+            <option value="default">Default Icon</option>
+            <option value="custom1">Custom Icon 1</option>
+            <option value="custom2">Custom Icon 2</option>
+        </select>
+
     </body>
     <script>
         var map = L.map('map').setView([51.505, -0.09], 13);
@@ -48,7 +55,6 @@
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
-// request current position
 
 navigator.geolocation.watchPosition(success, error);
 
@@ -89,10 +95,25 @@ var geocoder = L.Control.geocoder({
 
         var userIcon = L.icon({
             iconUrl: 'images/snow.png',
-            iconSize: [32, 32], // size of the icon
-            iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
-            popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+            iconSize: [32, 32], 
+            iconAnchor: [16, 32], 
+            popupAnchor: [0, -32] 
         });
+
+        var customIcon1 = L.icon({
+            iconUrl: 'images/sun.png', 
+            iconSize: [32, 32], 
+            iconAnchor: [16, 32], 
+            popupAnchor: [0, -32] 
+        });
+
+        var customIcon2 = L.icon({
+        iconUrl: 'images/cone.png', 
+        iconSize: [32, 32], 
+        iconAnchor: [16, 32], 
+        popupAnchor: [0, -32] 
+        });
+        
 
         document.getElementById('addressForm').addEventListener('submit', function(event) {
             event.preventDefault();
@@ -129,6 +150,22 @@ var geocoder = L.Control.geocoder({
                 console.error('Error getting current location:', error);
                 alert('Error getting current location.');
             });
+        });
+
+        iconSelect.addEventListener('change', function() {
+            var selectedIcon = iconSelect.value;
+            if (selectedIcon === 'custom1') {
+            L.marker(latlng, { icon: customIcon1 }).addTo(map)
+            .bindPopup('Custom Marker 1')
+            .openPopup();
+            } else if (selectedIcon === 'custom2') {
+              secondMarker.setIcon(customIcon2);
+            } else {
+                secondMarker.setIcon(defaultIcon);
+            L.marker(latlng, { icon: customIcon2 }).addTo(map)
+            .bindPopup('Custom Marker 2')
+            .openPopup();
+            }
         });
     </script>
 </html>
