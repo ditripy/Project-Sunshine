@@ -83,6 +83,10 @@ if(err.code===1){
 }
 
 
+var geocoder = L.Control.geocoder({
+            geocoder: L.Control.Geocoder.nominatim()
+        }).addTo(map);
+
 document.getElementById('addressForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var address = document.getElementById('addressInput').value;
