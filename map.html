@@ -36,6 +36,7 @@
         <form id="addressForm">
             <input type="text" id="addressInput" placeholder="Enter street name or address">
             <button type="submit">Report Status</button>
+            <button id="currentLocationBtn">Use Current Location</button>
         </form>
     </body>
     <script>
@@ -114,6 +115,19 @@ var geocoder = L.Control.geocoder({
                 } else {
                     alert('Address not found');
                 }
+            });
+        });
+
+        document.getElementById('currentLocationBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latlng = [position.coords.latitude, position.coords.longitude];
+                L.marker(latlng).addTo(map) // No custom icon
+                    .bindPopup('Your Current Location')
+                    .openPopup();
+            }, function(error) {
+                console.error('Error getting current location:', error);
+                alert('Error getting current location.');
             });
         });
     </script>
