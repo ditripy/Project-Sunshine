@@ -159,7 +159,7 @@ var geocoder = L.Control.geocoder({
 
     document.getElementById('iconSelect').addEventListener('change', function() {
         var selectedIcon = iconSelect.value;
-        var selectedMarker = getSelectedMarker();
+        var selectedMarker = document.querySelector('.selected-marker');
         if (selectedMarker) {
             switch (selectedIcon) {
                 case 'custom1':
@@ -179,7 +179,7 @@ var geocoder = L.Control.geocoder({
 
     function attachMarkerClickEvent(marker) {
         marker.on('click', function (e) {
-            var selectedMarker = getSelectedMarker();
+            var selectedMarker = document.querySelector('.selected-marker');
             if (selectedMarker) {
                 selectedMarker.classList.remove('selected-marker');
             }
@@ -187,8 +187,8 @@ var geocoder = L.Control.geocoder({
         });
     }
 
-    function getSelectedMarker() {
-        return document.querySelector('.selected-marker');
-    }
+    markers.forEach(function (marker) {
+    attachMarkerClickEvent(marker);
+});
     </script>
 </html>
