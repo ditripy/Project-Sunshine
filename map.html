@@ -152,7 +152,7 @@ var geocoder = L.Control.geocoder({
             });
         });
 
-        iconSelect.addEventListener('change', function() {
+        document.getElementById('iconSelect').addEventListener('change', function() {
             var selectedIcon = iconSelect.value;
             if (selectedIcon === 'custom1') {
             L.marker(latlng, { icon: customIcon1 }).addTo(map)
