@@ -124,6 +124,7 @@ var geocoder = L.Control.geocoder({
                 .bindPopup(e.geocode.name)
                 .openPopup();
             markers.push(marker);
+            attachMarkerClickEvent(marker);
         });
 
             
@@ -134,6 +135,7 @@ var geocoder = L.Control.geocoder({
                     .bindPopup(results[0].name)
                     .openPopup();
                 markers.push(marker);
+                attachMarkerClickEvent(marker);
             } else {
                 alert('Address not found');
             }
@@ -148,6 +150,7 @@ var geocoder = L.Control.geocoder({
                 .bindPopup('Your Current Location')
                 .openPopup();
             markers.push(marker);
+            attachMarkerClickEvent(marker);
         }, function (error) {
             console.error('Error getting current location:', error);
             alert('Error getting current location.');
@@ -156,7 +159,7 @@ var geocoder = L.Control.geocoder({
 
     document.getElementById('iconSelect').addEventListener('change', function() {
         var selectedIcon = iconSelect.value;
-        var selectedMarker = document.querySelector('.selected-marker');
+        var selectedMarker = getSelectedMarker();
         if (selectedMarker) {
             switch (selectedIcon) {
                 case 'custom1':
@@ -174,15 +177,18 @@ var geocoder = L.Control.geocoder({
         }
     });
 
-    // Add event listener to each marker
-    markers.forEach(function(marker) {
-        marker.on('click', function(e) {
-            var selectedMarker = document.querySelector('.selected-marker');
+    function attachMarkerClickEvent(marker) {
+        marker.on('click', function (e) {
+            var selectedMarker = getSelectedMarker();
             if (selectedMarker) {
                 selectedMarker.classList.remove('selected-marker');
             }
             this.classList.add('selected-marker');
         });
-    });
+    }
+
+    function getSelectedMarker() {
+        return document.querySelector('.selected-marker');
+    }
     </script>
 </html>
