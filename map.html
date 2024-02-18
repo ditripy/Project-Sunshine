@@ -81,18 +81,15 @@ document.getElementById('addressForm').addEventListener('submit', function(event
             event.preventDefault();
             var address = document.getElementById('addressInput').value;
 
-            L.Control.Geocoder.nominatim().geocode(address, function(results) {
-                if (results && results.length > 0) {
-                    var latlng = [results[0].center.lat, results[0].center.lng];
-
-                    L.marker(latlng).addTo(map)
-                        .bindPopup(address)
-                        .openPopup();
-                } else {
-                    alert('Address not found');
-                }
-            });
+            // Use Mapbox Geocoding API
+            L.Control.geocoder({
+                geocoder: L.Control.Geocoder.mapbox('YOUR_MAPBOX_ACCESS_TOKEN')
+            }).on('markgeocode', function(e) {
+                var latlng = e.geocode.center;
+                L.marker(latlng).addTo(map)
+                    .bindPopup(e.geocode.name)
+                    .openPopup();
+            }).addTo(map).geocode(address);
         });
-
     </script>
 </html>
