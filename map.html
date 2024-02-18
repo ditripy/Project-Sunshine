@@ -181,9 +181,9 @@ var geocoder = L.Control.geocoder({
         marker.on('click', function (e) {
             var selectedMarker = document.querySelector('.selected-marker');
             if (selectedMarker) {
-                selectedMarker.classList.remove('selected-marker');
+                selectedMarker.setIcon(userIcon);
             }
-            this.classList.add('selected-marker');
+            this.setIcon(customIcon1);
         });
     }
 
