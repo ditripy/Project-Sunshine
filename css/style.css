@@ -241,6 +241,32 @@ background-size: cover;
   border-radius: 10px;
 }
 
+.r a{
+  text-decoration: none;
+  display: inline-block;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: large;
+}
+
+.r{
+  margin-top: 10px;
+  text-align: center;
+}
+
+.r button {
+  border: none;
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #037ce0;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.r button:hover {
+  background-color: #014c8a;
+}
+
 .detail_box .search-container button {
   padding: 3px;
   margin-top: 8px;
@@ -664,6 +690,7 @@ background-size: cover;
 
 .need_section input.message-box {
   height: 120px;
+  background-color: #ffffff;
 }
 .need_section .container{
   text-align: center;

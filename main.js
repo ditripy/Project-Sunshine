@@ -142,3 +142,5 @@ function attachMarkerClickEvent(marker) {
 markers.forEach(function (marker) {
     attachMarkerClickEvent(marker);
 });
+
+    
