@@ -154,21 +154,45 @@ var geocoder = L.Control.geocoder({
         });
     });
 
-        document.getElementById('iconSelect').addEventListener('change', function() {
-            var selectedIcon = iconSelect.value;
-        markers.forEach(function (marker) {
+    document.getElementById('iconSelect').addEventListener('change', function() {
+        var selectedIcon = iconSelect.value;
+        var selectedMarker = markers[markers.length - 1]; // Get the last added marker
+        if (selectedMarker) {
             switch (selectedIcon) {
                 case 'custom1':
-                    marker.setIcon(customIcon1);
+                    selectedMarker.setIcon(customIcon1);
                     break;
                 case 'custom2':
-                    marker.setIcon(customIcon2);
+                    selectedMarker.setIcon(customIcon2);
                     break;
                 default:
-                    // Set default icon or handle other cases
-                    break;
+                    alert("Invalid icon selection.");
             }
+        } else {
+            alert("No marker available to change icon.");
+        }
+    });
+
+    // Add event listener to each marker
+    markers.forEach(function(marker) {
+        marker.on('click', function(e) {
+            changeMarkerIcon(this); // 'this' refers to the clicked marker
         });
     });
+
+    // Function to change marker icon based on user choice
+    function changeMarkerIcon(marker) {
+        var selectedIcon = document.getElementById('iconSelect').value;
+        switch (selectedIcon) {
+            case 'custom1':
+                marker.setIcon(customIcon1);
+                break;
+            case 'custom2':
+                marker.setIcon(customIcon2);
+                break;
+            default:
+                alert("Invalid icon selection.");
+        }
+    }
     </script>
 </html>
