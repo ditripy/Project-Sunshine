@@ -81,25 +81,32 @@ if(err.code===1){
     alert("Cannot get current location");
 }
 }
-// Geocoder control initialization
 var geocoder = L.Control.geocoder({
-        geocoder: L.Control.Geocoder.nominatim()
-    }).addTo(map);
+            geocoder: L.Control.Geocoder.nominatim()
+        }).addTo(map);
 
-    document.getElementById('addressForm').addEventListener('submit', function(event) {
-        event.preventDefault();
-        var address = document.getElementById('addressInput').value;
+        document.getElementById('addressForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var address = document.getElementById('addressInput').value;
 
-        // Use the geocode function of the geocoder control
-        geocoder.on('markgeocode', function(e) {
-            var latlng = e.geocode.center;
-            L.marker(latlng).addTo(map)
-                .bindPopup(e.geocode.name)
-                .openPopup();
+            geocoder.on('markgeocode', function(e) {
+                var latlng = e.geocode.center;
+                L.marker(latlng).addTo(map)
+                    .bindPopup(e.geocode.name)
+                    .openPopup();
+            });
+
+            // Geocode the address
+            geocoder.geocode(address, function(results) {
+                if (results && results.length > 0) {
+                    var latlng = results[0].center;
+                    L.marker(latlng).addTo(map)
+                        .bindPopup(results[0].name)
+                        .openPopup();
+                } else {
+                    alert('Address not found');
+                }
+            });
         });
-
-        // Geocode the address
-        geocoder.geocode(address);
-    });
     </script>
 </html>
