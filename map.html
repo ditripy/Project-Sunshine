@@ -83,7 +83,7 @@ if(err.code===1){
 }
 
 var geocoder = L.Control.geocoder({
-        geocoder: L.Control.Geocoder.nominatim()
+        geocoder: L.Control.geocoder.nominatim()
     }).addTo(map);
 
     document.getElementById('addressForm').addEventListener('submit', function(event) {
@@ -91,16 +91,12 @@ var geocoder = L.Control.geocoder({
         var address = document.getElementById('addressInput').value;
 
         // Use the geocode function of the geocoder control
-        geocoder.geocode(address, function(results) {
-            if (results && results.length > 0) {
-                var latlng = results[0].center;
-                L.marker(latlng).addTo(map)
-                    .bindPopup(results[0].name)
-                    .openPopup();
-            } else {
-                alert('Address not found');
-            }
-        });
+        geocoder.on('markgeocode', function(e) {
+            var latlng = e.geocode.center;
+            L.marker(latlng).addTo(map)
+                .bindPopup(e.geocode.name)
+                .openPopup();
+        }).addTo(map).geocode(address);
     });
     </script>
 </html>
