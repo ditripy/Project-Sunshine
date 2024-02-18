@@ -105,7 +105,7 @@ var geocoder = L.Control.geocoder({
                     .openPopup();
             });
 
-            // Geocode the address
+            
             geocoder.options.geocoder.geocode(address, function(results) {
                 if (results && results.length > 0) {
                     var latlng = results[0].center;
@@ -122,7 +122,7 @@ var geocoder = L.Control.geocoder({
             event.preventDefault();
             navigator.geolocation.getCurrentPosition(function(position) {
                 var latlng = [position.coords.latitude, position.coords.longitude];
-                L.marker(latlng).addTo(map) // No custom icon
+                L.marker(latlng, {icon: userIcon}).addTo(map) 
                     .bindPopup('Your Current Location')
                     .openPopup();
             }, function(error) {
