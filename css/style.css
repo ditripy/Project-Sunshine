@@ -46,11 +46,13 @@ body {
 .heading_container h2 {
   position: relative;
   font-weight: bold;
+  margin-top: 10px;
   margin-right: 10px;
+  margin-left: 10px;
 }
 
 .heading_container img {
-  width:50px;
+  width:35px;
 }
 
 /*header section*/
@@ -341,7 +343,7 @@ background-size: cover;
 
 .service_section {
   text-align: center;
-  background-color: #fffff7;
+  background-color: #f3faff;
 }
 
 .service_section .heading_container {
@@ -405,7 +407,7 @@ background-size: cover;
 }
 
 .service_section .service_container .box:hover, .service_section .service_container .box.active {
-  border-top: 15px solid #008cff;
+  border: 5px solid #64b7fb;
 }
 
 .service_section .btn-box {
@@ -433,7 +435,8 @@ background-size: cover;
 /*about*/
 
 .about_section {
-  background-color: #f3faff;
+  background-color: #fffff7;
+  text-align :center;
 }
 
 .about_section .row {
@@ -476,7 +479,14 @@ background-size: cover;
   margin-right: 15%;
 }
 
+.about_section .heading_container {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
 .about_section .detail-box p {
+  text-align: center;
   margin-top: 25px;
 }
 
@@ -504,6 +514,7 @@ background-size: cover;
 }
 
 .blog_section .box {
+  border-radius: 10px;
   margin-top: 55px;
   background-color: #ffffff;
   -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.15);
@@ -515,6 +526,8 @@ background-size: cover;
 }
 
 .blog_section .box .img-box img {
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   width: 100%;
 }
 
@@ -526,10 +539,15 @@ background-size: cover;
   font-weight: bold;
 }
 
-.contact_section {
-  position: relative;
+.blog_section{
+  background-color: #fffff7;
 }
 
+.contact_section .heading_container{
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
 .contact_section form {
   margin-top: 45px;
   padding-right: 35px;
@@ -567,15 +585,24 @@ background-size: cover;
 .contact_section input.message-box {
   height: 120px;
 }
-
+.contact_section .container{
+  text-align: center;
+}
 .contact_section button {
   border: none;
   display: inline-block;
-  padding: 10px 25px;
+  padding: 10px 20px;
   background-color: #037ce0;
   color: #ffffff;
   border-radius: 10px;
   margin-top: 25px;
+}
+.contact_section a{
+  text-decoration: none;
+  display: inline-block;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: large;
 }
 
 .contact_section button:hover {
@@ -589,6 +616,90 @@ background-size: cover;
 
 .contact_section .map_container .map-responsive {
   height: 100%;
+}
+
+.contact_section{
+  background-color: #f3faff;
+}
+
+
+.need_section .heading_container{
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+.need_section form {
+  margin-top: 45px;
+  padding-right: 35px;
+}
+
+.need_section input {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  height: 50px;
+  margin-bottom: 25px;
+  padding-left: 25px;
+  background-color: transparent;
+  color: #101010;
+  -webkit-box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.16);
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.16);
+}
+
+.need_section input::-webkit-input-placeholder {
+  color: #7e7e7e;
+}
+
+.need_section input:-ms-input-placeholder {
+  color: #7e7e7e;
+}
+
+.need_section input::-ms-input-placeholder {
+  color: #7e7e7e;
+}
+
+.need_section input::placeholder {
+  color: #7e7e7e;
+}
+
+.need_section input.message-box {
+  height: 120px;
+}
+.need_section .container{
+  text-align: center;
+}
+.need_section button {
+  border: none;
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #037ce0;
+  color: #ffffff;
+  border-radius: 10px;
+  margin-top: 25px;
+}
+.need_section a{
+  text-decoration: none;
+  display: inline-block;
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: large;
+}
+
+.need_section button:hover {
+  background-color: #014c8a;
+}
+
+.need_section .map_container {
+  height: 100%;
+  min-height: 325px;
+}
+
+.need_section .map_container .map-responsive {
+  height: 100%;
+}
+
+.need_section{
+  background-color: #fffff7;
 }
 
 .footer_bg {
@@ -727,6 +838,7 @@ background-size: cover;
       -ms-flex-pack: center;
           justify-content: center;
   position: relative;
+  background-color: #f3faff;
 }
 
 .footer_section p {
@@ -735,8 +847,3 @@ background-size: cover;
   text-align: center;
   padding: 20px;
 }
-
-.footer_section p a {
-  color: #222222;
-}
-/*# sourceMappingURL=style.css.map */
