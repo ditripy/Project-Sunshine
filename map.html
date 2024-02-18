@@ -55,6 +55,27 @@
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map);
 
+var markers = [];
+var userIcon = L.icon({
+            iconUrl: 'images/snow.png',
+            iconSize: [32, 32], 
+            iconAnchor: [16, 32], 
+            popupAnchor: [0, -32] 
+        });
+
+        var customIcon1 = L.icon({
+            iconUrl: 'images/sun.png', 
+            iconSize: [32, 32], 
+            iconAnchor: [16, 32], 
+            popupAnchor: [0, -32] 
+        });
+
+        var customIcon2 = L.icon({
+        iconUrl: 'images/cone.png', 
+        iconSize: [32, 32], 
+        iconAnchor: [16, 32], 
+        popupAnchor: [0, -32] 
+        });
 
 navigator.geolocation.watchPosition(success, error);
 
@@ -93,79 +114,61 @@ var geocoder = L.Control.geocoder({
             geocoder: L.Control.Geocoder.nominatim()
         }).addTo(map);
 
-        var userIcon = L.icon({
-            iconUrl: 'images/snow.png',
-            iconSize: [32, 32], 
-            iconAnchor: [16, 32], 
-            popupAnchor: [0, -32] 
-        });
-
-        var customIcon1 = L.icon({
-            iconUrl: 'images/sun.png', 
-            iconSize: [32, 32], 
-            iconAnchor: [16, 32], 
-            popupAnchor: [0, -32] 
-        });
-
-        var customIcon2 = L.icon({
-        iconUrl: 'images/cone.png', 
-        iconSize: [32, 32], 
-        iconAnchor: [16, 32], 
-        popupAnchor: [0, -32] 
-        });
-        
-
         document.getElementById('addressForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var address = document.getElementById('addressInput').value;
 
             geocoder.on('markgeocode', function(e) {
                 var latlng = e.geocode.center;
-                L.marker(latlng, {icon: userIcon}).addTo(map)
-                    .bindPopup(e.geocode.name)
-                    .openPopup();
-            });
+                var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
+                .bindPopup(e.geocode.name)
+                .openPopup();
+            markers.push(marker);
+        });
 
             
             geocoder.options.geocoder.geocode(address, function(results) {
                 if (results && results.length > 0) {
                     var latlng = results[0].center;
-                    L.marker(latlng, {icon: userIcon}).addTo(map)
-                        .bindPopup(results[0].name)
-                        .openPopup();
-                } else {
-                    alert('Address not found');
-                }
-            });
+                    var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
+                    .bindPopup(results[0].name)
+                    .openPopup();
+                markers.push(marker);
+            } else {
+                alert('Address not found');
+            }
         });
+    });
 
         document.getElementById('currentLocationBtn').addEventListener('click', function(event) {
             event.preventDefault();
             navigator.geolocation.getCurrentPosition(function(position) {
                 var latlng = [position.coords.latitude, position.coords.longitude];
-                L.marker(latlng, {icon: userIcon}).addTo(map) 
-                    .bindPopup('Your Current Location')
-                    .openPopup();
-            }, function(error) {
-                console.error('Error getting current location:', error);
-                alert('Error getting current location.');
-            });
+                var marker = L.marker(latlng, {icon: userIcon}).addTo(map)
+                .bindPopup('Your Current Location')
+                .openPopup();
+            markers.push(marker);
+        }, function (error) {
+            console.error('Error getting current location:', error);
+            alert('Error getting current location.');
         });
+    });
 
         document.getElementById('iconSelect').addEventListener('change', function() {
             var selectedIcon = iconSelect.value;
-            if (selectedIcon === 'custom1') {
-            L.marker(latlng, { icon: customIcon1 }).addTo(map)
-            .bindPopup('Custom Marker 1')
-            .openPopup();
-            } else if (selectedIcon === 'custom2') {
-              secondMarker.setIcon(customIcon2);
-            } else {
-                secondMarker.setIcon(defaultIcon);
-            L.marker(latlng, { icon: customIcon2 }).addTo(map)
-            .bindPopup('Custom Marker 2')
-            .openPopup();
+        markers.forEach(function (marker) {
+            switch (selectedIcon) {
+                case 'custom1':
+                    marker.setIcon(customIcon1);
+                    break;
+                case 'custom2':
+                    marker.setIcon(customIcon2);
+                    break;
+                default:
+                    // Set default icon or handle other cases
+                    break;
             }
         });
+    });
     </script>
 </html>
