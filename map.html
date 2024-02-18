@@ -86,13 +86,20 @@ var geocoder = L.Control.geocoder({
             geocoder: L.Control.Geocoder.nominatim()
         }).addTo(map);
 
+        var userIcon = L.icon({
+            iconUrl: 'images/snow.png',
+            iconSize: [32, 32], // size of the icon
+            iconAnchor: [16, 32], // point of the icon which will correspond to marker's location
+            popupAnchor: [0, -32] // point from which the popup should open relative to the iconAnchor
+        });
+
         document.getElementById('addressForm').addEventListener('submit', function(event) {
             event.preventDefault();
             var address = document.getElementById('addressInput').value;
 
             geocoder.on('markgeocode', function(e) {
                 var latlng = e.geocode.center;
-                L.marker(latlng).addTo(map)
+                L.marker(latlng, {icon: userIcon}).addTo(map)
                     .bindPopup(e.geocode.name)
                     .openPopup();
             });
@@ -101,7 +108,7 @@ var geocoder = L.Control.geocoder({
             geocoder.options.geocoder.geocode(address, function(results) {
                 if (results && results.length > 0) {
                     var latlng = results[0].center;
-                    L.marker(latlng).addTo(map)
+                    L.marker(latlng, {icon: userIcon}).addTo(map)
                         .bindPopup(results[0].name)
                         .openPopup();
                 } else {
