@@ -26,6 +26,7 @@
   <link href="css/style.css" rel="stylesheet" />
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
 </head>
 
 <body>
@@ -36,8 +37,8 @@
       <div class="container">
         <nav class="navbar navbar-expand-lg custom_nav-container ">
           <a class="navbar-brand" href="index.html">
-            <img src="images/sun.png" alt="">
-            <span>
+            <img src="images/sunn.png" alt="">
+            <span id="n">
               Project Sunshine
             </span>
           </a>
@@ -86,8 +87,12 @@
               <p>
                 It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem
               </p>
-              <a href="" class="">
-                Contact Us
+              <div class="search-container">
+                <form action="/action_page.php">
+                  <input type="text" placeholder="Input your postal code" name="search">
+                  <button type="submit">Submit</button>
+                </form>
+              </div>
             </div>
           </div>
           <div class="col-lg-5 col-md-6 offset-lg-1">
@@ -153,7 +158,7 @@
             </p>
           </div>
         </div>
-        <div class="box active">
+        <div class="box">
           <div class="img-box">
             <img src="images/s2.png" class="img1" alt="">
           </div>
