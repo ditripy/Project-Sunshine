@@ -107,26 +107,6 @@ document.getElementById('currentLocationBtn').addEventListener('click', function
     });
 });
 
-document.getElementById('iconSelect').addEventListener('change', function () {
-    var selectedIcon = iconSelect.value;
-    var selectedMarker = document.querySelector('.selected-marker');
-    if (selectedMarker) {
-        switch (selectedIcon) {
-            case 'custom1':
-                selectedMarker.setIcon(customIcon1);
-                break;
-            case 'custom2':
-                selectedMarker.setIcon(customIcon2);
-                break;
-            default:
-                alert("Invalid icon selection.");
-        }
-        selectedMarker.classList.remove('selected-marker');
-    } else {
-        alert("No marker selected.");
-    }
-});
-
 function attachMarkerClickEvent(marker) {
     marker.on('click', function (e) {
         var selectedMarker = document.querySelector('.selected-marker');
