@@ -42,7 +42,7 @@
 
 navigator.geolocation.watchPosition(success, error);
 
-let marker, circle;
+let marker, circle, zoomed;
 
 function success(place){
 const lat = place.coords.latitude;
@@ -57,7 +57,10 @@ if(marker){
 marker = L.marker([lat,lng]).addTo(map);
 circle = L.circle([lat,lng], {radius: accuracy}).addTo(map);
 
-map.fitBounds(circle.getBounds());
+if (!zoomed){
+    zoomed = map.fitBounds(circle.getBounds());
+}
+
 }
 
 function error(err){
