@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <!-- Mobile Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <!-- Site Metas -->
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        <title> Map Navigator </title>
+
+        <!--Leaflet CSS-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+
+     
+ <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+ integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+ crossorigin=""></script>
+
+  <!-- Leaflet Geocoding Control -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+
+       <style>
+        #map {height: 400px;}
+       </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <form id="addressForm">
+            <input type="text" id="addressInput" placeholder="Enter street name or address">
+            <button type="submit">Report Status</button>
+            <button id="currentLocationBtn">Use Current Location</button>
+        </form>
+
+        <select id="iconSelect">
+            <option value="default">Default Icon</option>
+            <option value="custom1">Custom Icon 1</option>
+            <option value="custom2">Custom Icon 2</option>
+        </select>
+
+    </body>
+    <script>
+        var map = L.map('map').setView([51.505, -0.09], 13);
+
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
+
+
+navigator.geolocation.watchPosition(success, error);
+
+let marker, circle, zoomed;
+
+function success(place){
+const lat = place.coords.latitude;
+const lng = place.coords.longitude;
+const accuracy = place.coords.accuracy;
+
+if(marker){
+    map.removeLayer(marker);
+    map.removeLayer(circle);
+}
+
+marker = L.marker([lat,lng]).addTo(map);
+circle = L.circle([lat,lng], {radius: accuracy}).addTo(map);
+
+if (!zoomed){
+    zoomed = map.fitBounds(circle.getBounds());
+}
+
+map.setView([lat,lng]);
+
+}
+
+function error(err){
+if(err.code===1){
+    alert("Please allow geolocation access");
+}else{
+    alert("Cannot get current location");
+}
+}
+
+var geocoder = L.Control.geocoder({
+            geocoder: L.Control.Geocoder.nominatim()
+        }).addTo(map);
+
+        var userIcon = L.icon({
+            iconUrl: 'images/snow.png',
+            iconSize: [32, 32], 
+            iconAnchor: [16, 32], 
+            popupAnchor: [0, -32] 
+        });
+
+        var customIcon1 = L.icon({
+            iconUrl: 'images/sun.png', 
+            iconSize: [32, 32], 
+            iconAnchor: [16, 32], 
+            popupAnchor: [0, -32] 
+        });
+
+        var customIcon2 = L.icon({
+        iconUrl: 'images/cone.png', 
+        iconSize: [32, 32], 
+        iconAnchor: [16, 32], 
+        popupAnchor: [0, -32] 
+        });
+        
+
+        document.getElementById('addressForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var address = document.getElementById('addressInput').value;
+
+            geocoder.on('markgeocode', function(e) {
+                var latlng = e.geocode.center;
+                L.marker(latlng, {icon: userIcon}).addTo(map)
+                    .bindPopup(e.geocode.name)
+                    .openPopup();
+            });
+
+            
+            geocoder.options.geocoder.geocode(address, function(results) {
+                if (results && results.length > 0) {
+                    var latlng = results[0].center;
+                    L.marker(latlng, {icon: userIcon}).addTo(map)
+                        .bindPopup(results[0].name)
+                        .openPopup();
+                } else {
+                    alert('Address not found');
+                }
+            });
+        });
+
+        document.getElementById('currentLocationBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latlng = [position.coords.latitude, position.coords.longitude];
+                L.marker(latlng, {icon: userIcon}).addTo(map) 
+                    .bindPopup('Your Current Location')
+                    .openPopup();
+            }, function(error) {
+                console.error('Error getting current location:', error);
+                alert('Error getting current location.');
+            });
+        });
+
+        iconSelect.addEventListener('change', function() {
+            var selectedIcon = iconSelect.value;
+            if (selectedIcon === 'custom1') {
+            L.marker(latlng, { icon: customIcon1 }).addTo(map)
+            .bindPopup('Custom Marker 1')
+            .openPopup();
+            } else if (selectedIcon === 'custom2') {
+              secondMarker.setIcon(customIcon2);
+            } else {
+                secondMarker.setIcon(defaultIcon);
+            L.marker(latlng, { icon: customIcon2 }).addTo(map)
+            .bindPopup('Custom Marker 2')
+            .openPopup();
+            }
+        });
+    </script>
+</html>
