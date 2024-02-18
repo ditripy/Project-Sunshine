@@ -124,6 +124,7 @@ var geocoder = L.Control.geocoder({
                 .bindPopup(e.geocode.name)
                 .openPopup();
             markers.push(marker);
+            attachMarkerClickEvent(marker);
         });
 
             
@@ -134,6 +135,7 @@ var geocoder = L.Control.geocoder({
                     .bindPopup(results[0].name)
                     .openPopup();
                 markers.push(marker);
+                attachMarkerClickEvent(marker);
             } else {
                 alert('Address not found');
             }
@@ -148,27 +150,45 @@ var geocoder = L.Control.geocoder({
                 .bindPopup('Your Current Location')
                 .openPopup();
             markers.push(marker);
+            attachMarkerClickEvent(marker);
         }, function (error) {
             console.error('Error getting current location:', error);
             alert('Error getting current location.');
         });
     });
 
-        document.getElementById('iconSelect').addEventListener('change', function() {
-            var selectedIcon = iconSelect.value;
-        markers.forEach(function (marker) {
+    document.getElementById('iconSelect').addEventListener('change', function() {
+        var selectedIcon = iconSelect.value;
+        var selectedMarker = getSelectedMarker();
+        if (selectedMarker) {
             switch (selectedIcon) {
                 case 'custom1':
-                    marker.setIcon(customIcon1);
+                    selectedMarker.setIcon(customIcon1);
                     break;
                 case 'custom2':
-                    marker.setIcon(customIcon2);
+                    selectedMarker.setIcon(customIcon2);
                     break;
                 default:
-                    // Set default icon or handle other cases
-                    break;
+                    alert("Invalid icon selection.");
             }
-        });
+            selectedMarker.classList.remove('selected-marker');
+        } else {
+            alert("No marker selected.");
+        }
     });
+
+    function attachMarkerClickEvent(marker) {
+        marker.on('click', function (e) {
+            var selectedMarker = getSelectedMarker();
+            if (selectedMarker) {
+                selectedMarker.classList.remove('selected-marker');
+            }
+            this.classList.add('selected-marker');
+        });
+    }
+
+    function getSelectedMarker() {
+        return document.querySelector('.selected-marker');
+    }
     </script>
 </html>
