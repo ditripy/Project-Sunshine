@@ -300,11 +300,13 @@ background-size: cover;
 
 .slider_section .img_container div#carouselExampleContarols {
   width: 100%;
-  position: unset;
+  position:unset;
 }
 
 .slider_section .img_container .img-box img {
   width: 100%;
+  width: 500px;
+  height: 350px;
 }
 
 .slider_section .carousel-control-prev,
